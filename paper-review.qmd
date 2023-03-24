@@ -1,0 +1,112 @@
+---
+format: revealjs
+self-contained: true
+---
+```{r}
+#| message: false
+#| include: false
+library(mvtnorm)
+library(tidyverse)
+library(tsibble)
+library(tidyr)
+library(ggplot2)
+library(latex2exp)
+library(glue)
+
+EPS <- sqrt(.Machine$double.eps)
+RANDOM_SEED <- 2023-02-10
+```
+
+## Paper Review
+
+<center>
+
+![<https://dx.doi.org/10.3847/1538-3881/abec89>](figures/title-abstract.png){width=700}
+
+
+
+</center>
+
+
+## Summary
+
+1. Use gaussian processes (GPs) to disentangle contradictory reports of planets versus rotation artefacts from Kapteyn's star.
+2. Observed radial velocities best explained by star rotation only
+3. Be wary of using sinusoids for modelling quasi-periodicity
+
+
+## Gaussian Process
+
+- mean function, $\mu(t)$
+- covariance or *kernel* function, $k(t_i, t_j)$
+
+$$\boldsymbol{Y} = \begin{bmatrix} Y_1 \\ \vdots \\ Y_n \end{bmatrix}  \sim \mathcal{GP}(\boldsymbol{\mu}, \boldsymbol{\Sigma})$$
+
+where $\boldsymbol{\mu} = \mu(t_i),\; \boldsymbol{\Sigma} = \mathrm{Cov}(Y_i, Y_j) = k(t_i, t_j)\quad i,j = 1, \dots, n$.
+
+## 
+
+$$\textrm{Quasi-periodic} \qquad k(\tau; \lambda) = A \exp\left\{-\left( \frac{t_i - t_j}{\lambda}\right)^2 - \Gamma \sin^2 \left(\frac{\pi (t_i - t_j)}{P}\right) \right\} + \sigma_i^2 \delta_{ij}$$
+
+where $A$ is the amplitude, $\lambda$ is the correlation timescale, $\Gamma$ is a smoothness parameter, $P$ is the rotation period, and $\sigma$ is the white noise. 
+
+![](figures/figure03.png)
+
+## Dataset
+
+  - 92 HARPS spectra (Pepe et al. 2000)
+  - 20 HIRES spectra (Vogt et al. 1994)
+  - Across 10.1y
+
+<center>
+
+![](figures/figure01a.png){width=400px} ![](figures/figure01b.png){width=400px}
+
+</center>
+
+
+## Methodology I
+
+1. Fit a GP using different kernels (QPK, QPK + SE)
+  - Model 1 (quasi-periodic)
+  - Model 2 (quasi-periodic + long-term drift in H$\alpha$)
+
+2. Hyperparameters fitted using maximum likelihood estimation, priors from literature
+  - GPs implemented in `george` package in `R`
+  - MCMC sampling done using `emcee` package in `R`
+
+3. Model 1 vs Model 2 compared using BIC (lower is better) and Likelihood Ratio statistic.
+
+
+## Methodology II
+
+4. Fit third model of RVs using above GP + Keplerian orbit
+
+5. Examine the fitted parameters to decide the fit
+
+
+## Results
+
+![](figures/figure08.png)
+
+
+
+
+
+## Conclusions
+
+- Can use GPs to jointly model H$\alpha$ and RV simultaneously.
+
+- QP GP returns a rotational period of 124.7 days
+
+## Statistical claims needing caveats
+
+
+
+## Things to try
+
+
+
+##
+
+![](figures/figure05.png)
