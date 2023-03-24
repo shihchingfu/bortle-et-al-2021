@@ -46,9 +46,11 @@ where $\boldsymbol{\mu} = \mu(t_i),\; \boldsymbol{\Sigma} = \mathrm{Cov}(Y_i, Y_
 
 ## 
 
-$$\textrm{Quasi-periodic} \qquad k(\tau; \lambda) = A \exp\left\{-\left( \frac{t_i - t_j}{\lambda}\right)^2 - \Gamma \sin^2 \left(\frac{\pi (t_i - t_j)}{P}\right) \right\} + \sigma_i^2 \delta_{ij}$$
+$$k(\tau; \lambda) = A \exp\left\{-\left( \frac{t_i - t_j}{\lambda}\right)^2 - \Gamma \sin^2 \left(\frac{\pi (t_i - t_j)}{P}\right) \right\} + \sigma_i^2 \delta_{ij}$$
 
 where $A$ is the amplitude, $\lambda$ is the correlation timescale, $\Gamma$ is a smoothness parameter, $P$ is the rotation period, and $\sigma$ is the white noise. 
+
+##
 
 ![](figures/figure03.png)
 
@@ -75,14 +77,14 @@ where $A$ is the amplitude, $\lambda$ is the correlation timescale, $\Gamma$ is 
   - GPs implemented in `george` package in `R`
   - MCMC sampling done using `emcee` package in `R`
 
-3. Model 1 vs Model 2 compared using BIC (lower is better) and Likelihood Ratio statistic.
-
 
 ## Methodology II
 
+3. Model 1 vs Model 2 compared using BIC (lower is better) and Likelihood Ratio statistic.
+
 4. Fit third model of RVs using above GP + Keplerian orbit
 
-5. Examine the fitted parameters to decide the fit
+5. Examine the residuals after fitting to see any presence of a signal.
 
 
 ## Results
@@ -90,8 +92,9 @@ where $A$ is the amplitude, $\lambda$ is the correlation timescale, $\Gamma$ is 
 ![](figures/figure08.png)
 
 
+##
 
-
+![](figures/figure10.png)
 
 ## Conclusions
 
@@ -99,13 +102,13 @@ where $A$ is the amplitude, $\lambda$ is the correlation timescale, $\Gamma$ is 
 
 - QP GP returns a rotational period of 124.7 days
 
-## Statistical claims needing caveats
+- No residuals signals suggesting no exoplanet
 
+## Limitations
 
+- Very sparse data!
 
-## Things to try
-
-
+- GP perhaps have overfit; can consider a simpler less flexible kernel.
 
 ##
 
